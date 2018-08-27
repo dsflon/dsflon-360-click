@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>j_three.panoramaImage.click.js | Library</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link href="./common/css/common.css" rel="stylesheet">
+	<link href="./common/css.demo.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="area"></div>
+
+<script src="./common/libs/three.min.js"></script>
+<script src="./common/libs/OrbitControls.js"></script>
+<script src="./common/libs/tween.min.js"></script>
+<!-- <script src="./common/libs/TrackballControls.js"></script> -->
+<script src="j_three.panoramaImage.click.js"></script>
+
+<script>
+
+var mainImg, initCameraPos = {};
+var area = document.getElementById("area");
+var imageSrc = './common/images/01.jpg';
+var imageSrc = './common/images/earth.png';
+// var imageSrc = 'img02.jpg';
+
+window.addEventListener("load", function(){
+	ImageInit();
+	Init();
+});
+
+function ImageInit() {
+
+    mainImg = new jThreePanoramaImageClick(area, imageSrc);
+	// mainImg.minDistance = 0.1;
+	// mainImg.defaultDistance = 4;
+	// mainImg.maxDistance = 5.5;
+
+	mainImg.minDistance = 7;
+	mainImg.defaultDistance = 13;
+	mainImg.maxDistance = 20;
+	mainImg.reverse = false;
+
+    mainImg.autoRotate = true;
+    mainImg.autoRotateSpeed = 0.2;
+	mainImg.zoomSpeed = 0.2;
+
+	mainImg.defaultRotateY = Math.PI/1.4;
+	// mainImg.defaultRotateX = Math.PI/30;
+
+	mainImg.pointTexture = true;
+
+	mainImg.points = [
+		{"latitude": 35, "longitude": 139, "texture": "point_texture.png"},
+		{"latitude": 51.2838, "longitude": 0, "texture": "point_texture.png"},
+		{"latitude": 39, "longitude": -116, "texture": "point_texture.png"},
+		{"latitude": 34, "longitude": 118, "texture": "point_texture.png"},
+		{"latitude": -33, "longitude": 151, "texture": "point_texture.png"},
+		{"latitude": -23, "longitude": -46, "texture": "point_texture.png"},
+		{"latitude": 1, "longitude": 103, "texture": "point_texture.png"},
+		{"latitude": 90, "longitude": 0, "texture": "point_texture.png"},
+		{"latitude": -90, "longitude": 0, "texture": "point_texture.png"},
+		{"latitude": 12, "longitude": 52, "texture": "point_texture.png"},
+	];
+
+}
+
+function Init(){
+
+	mainImg.loadEnd = loadEnd;
+	mainImg.clickEnd = clickEnd;
+
+}
+
+function loadEnd() {
+
+	mainImg.play();
+
+}
+
+var clickFlag = false;
+var prevData = null;
+
+function clickEnd(object,data) {
+
+	object.material.opacity = 0.5;
+	object.scale.set(1.5,1.5,1.5);
+
+	if( !clickFlag ) {
+
+		initCameraPos["x"] = mainImg.camera.position.x;
+		initCameraPos["y"] = mainImg.camera.position.y;
+		initCameraPos["z"] = mainImg.camera.position.z;
+
+	}
+
+	if( clickFlag && ( data.id == prevData ) ) {
+
+		ZoomOut(object);
+
+	} else {
+
+		ZoomIn(object);
+
+	}
+
+	prevData = data.id;
+
+}
+
+
+function ZoomIn(object) {
+
+	mainImg.stop();
+
+	var x = object.position.x * 1.5;
+	var y = object.position.y * 1.5;
+	var z = object.position.z * 1.5;
+
+	//
+	mainImg.transform( mainImg.camera.position, {
+		"x": x,
+		"y": y,
+		"z": z
+	},1000 );
+
+	clickFlag = true;
+
+}
+function ZoomOut(object) {
+
+	mainImg.start();
+
+	mainImg.transform( mainImg.camera.position, {
+		"x": initCameraPos.x,
+		"y": initCameraPos.y,
+		"z": initCameraPos.z
+	},1000 );
+
+	clickFlag = false;
+
+}
+
+
+</script>
+
+</body>
+</html>

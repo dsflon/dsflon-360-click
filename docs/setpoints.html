@@ -1,0 +1,139 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>j_three.panoramaImage.setpoints.js | Library</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link href="./common/css/common.css" rel="stylesheet">
+	<link href="./common/css.demo.css" rel="stylesheet">
+
+	<style>
+		#points {
+			position: fixed;
+			top: 0; left: 0;
+			padding: 0px 20px;
+			min-width: 200px;
+			background: #FFF;
+			z-index: 9999;
+			cursor: auto;
+		}
+		#points ul { line-height: 1; padding: 20px 0; border-top: 1px dotted #999; }
+		#points ul:first-child { border-top: none; }
+		#points ul li { display: inline-block; margin-right: 20px; }
+		#points ul li span { color: #999; }
+		#fileWrap { left: 50%; }
+		#reload { right: 50px; bottom: 50px; }
+	</style>
+</head>
+<body>
+
+<div id="area"></div>
+<div id="points"></div>
+
+<div id="loading" class="loadEnd">Loading ...</div>
+<label id="fileWrap"><input id="file" type="file" multiple></label>
+<div id="reload" class="disabled" onclick="location.reload()"></div>
+
+<script src="./common/libs/three.min.js"></script>
+<script src="./common/libs/OrbitControls.js"></script>
+<script src="j_three.panoramaImage.setpoints.js"></script>
+
+<script>
+
+var mainImg;
+var area = document.getElementById("area");
+var loading = document.getElementById("loading");
+var fileWrap = document.getElementById("fileWrap");
+var button = document.getElementById("play");
+var reload = document.getElementById("reload");
+
+window.addEventListener("load", function(){
+	UploadFile();
+});
+
+function UploadFile() {
+
+	var fileReader = new FileReader;
+	var file = document.getElementById("file");
+
+	file.addEventListener('change', function(e){
+
+		loading.className = "";
+
+		var files = e.target.files[0];
+		if (! files.type.match('image.*')) {
+			alert("画像ファイルをアップロードしてくだいさい");
+			return;
+		}
+
+		fileReader.onload = function(e){
+
+			var data = new Image();
+		    var imageSrc = data.src = e.target.result;
+
+			data.onload = function(){
+				ImageInit( imageSrc );
+				Init();
+			}
+
+		};
+		fileReader.readAsDataURL(files);
+
+	});
+
+}
+
+function ImageInit( imageSrc ) {
+
+    mainImg = new jThreePanoramaImagePoints(area, imageSrc);
+	mainImg.minDistance = 0;
+	mainImg.defaultDistance = 4;
+	mainImg.maxDistance = 14;
+
+	// mainImg.minDistance = 7;
+	// mainImg.defaultDistance = 15;
+	// mainImg.maxDistance = 20;
+	// mainImg.reverse = false;
+
+	mainImg.zoomSpeed = 4;
+
+}
+
+function Init(){
+
+	fileWrap.className = "play";
+	reload.className = "play";
+
+	mainImg.loadEnd = loadEnd;
+	mainImg.clickEnd = clickEnd;
+
+}
+
+function loadEnd() {
+	loading.className = "loadEnd";
+
+	mainImg.play();
+
+}
+
+function clickEnd(latitude,longitude) {
+
+	var points = document.getElementById("points");
+
+	var html =  '<ul>'
+		html += 	'<li><span>{ "latitude":</span> ' + latitude + ', </li>'
+		html += 	'<li><span>"longitude":</span> ' + longitude + '<span> },</span></li>'
+		html += '</ul>'
+
+	points.insertAdjacentHTML("beforeend",html);
+
+}
+
+
+</script>
+
+</body>
+</html>
