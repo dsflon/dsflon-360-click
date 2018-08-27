@@ -9,4 +9,7 @@
 
 ## preview
 所得した緯度経度を j_three.panoramaImage.click.js の "points"プロパティにわたす。
-[https://dsflon.github.io/dsflon-360-click/preview2.html](https://dsflon.github.io/dsflon-360-click/preview2.html)
+
+[https://dsflon.github.io/dsflon-360-click/preview.html](https://dsflon.github.io/dsflon-360-click/preview.html)
+
+[https://dsflon.github.io/dsflon-360-click/preview-transform.html](https://dsflon.github.io/dsflon-360-click/preview-transform.html)
