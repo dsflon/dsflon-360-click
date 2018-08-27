@@ -1,8 +1,8 @@
 # page
 360度画像にクリッカブルエリアを配置するためのジェネレータ。
-また、そのプレビュー。
+また、ジェネレータをクリッカブルエリアを配置した場合のプレビュー。
 
-## set points
+## set clickable area
 [https://dsflon.github.io/dsflon-360-click/setpoints.html](https://dsflon.github.io/dsflon-360-click/setpoints.html)
 
 
