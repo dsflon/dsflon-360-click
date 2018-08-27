@@ -40,7 +40,7 @@ body {
 #play { left: 35%; }
 #fileWrap {
     left: 65%;
-    background: url(./common/images/upload.svg) no-repeat center #FFF;
+    background: url(../images/upload.svg) no-repeat center #FFF;
     background-size: 30px auto;
     border: none;
 }
@@ -50,7 +50,7 @@ body {
     transform: translate(50%,50%);
     -webkit-transform: translate(50%,50%);
     -ms-transform: translate(50%,50%);
-    background: url(./common/images/reload.svg) no-repeat center #FFF;
+    background: url(../images/reload.svg) no-repeat center #FFF;
     background-size: 30px auto;
 }
 #reload.disabled { opacity: 0; pointer-events: none; }
